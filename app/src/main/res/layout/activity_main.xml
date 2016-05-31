@@ -12,21 +12,27 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Selfie!"
-        android:id="@+id/startButton"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:text="show button"
+        android:id="@+id/showButton"
+        android:layout_below="@+id/delayTextField"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/delayTextField"
+        android:hint="Delay (in seconds)"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/startButton"
-        android:layout_toStartOf="@+id/startButton"
-        android:hint="Delay (in seconds)" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hide Button"
+        android:id="@+id/hideButton"
+        android:layout_alignTop="@+id/showButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

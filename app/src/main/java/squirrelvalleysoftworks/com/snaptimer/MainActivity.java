@@ -6,17 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
     private Button startButton;
     private EditText delayTextField;
+    private Button hideButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,27 +26,47 @@ public class MainActivity extends AppCompatActivity {
             System.err.println("Error requesting root privileges");
         }
 
-        startButton = (Button) findViewById(R.id.startButton);
+
+        startButton = (Button) findViewById(R.id.showButton);
         startButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {startButtonHandler();}
+            public void onClick(View v) {
+                delayTextField = (EditText) findViewById(R.id.delayTextField);
+                long timeout = System.currentTimeMillis();
+
+                if(delayTextField.getText().toString().compareTo("") == 0) {
+                    timeout = timeout + 7000; //Default 7 seconds
+                } else {
+                    timeout = Long.parseLong(delayTextField.getText().toString());
+                    timeout = timeout * 1000; // Seconds to milliseconds
+                    timeout = timeout + System.currentTimeMillis(); // Actual time to be triggered
+                }
+
+                Intent newI = new Intent(MainActivity.this, Floater.class);
+                Bundle extras = new Bundle();
+                extras.putLong("timeout", timeout);
+                newI.putExtras(extras);
+                startService(newI);
+            }
         });
 
-        delayTextField = (EditText) findViewById(R.id.delayTextField);
+        hideButton = (Button) findViewById(R.id.hideButton);
+        hideButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(new Intent(MainActivity.this, Floater.class));
+            }
+        });
+
+
 
     }
 
-    private void startButtonHandler() {
-        System.out.println("Clicked!");
-        Intent intent = new Intent(this, TriggerService.class);
-        PendingIntent pending = PendingIntent.getService(this, 0, intent, 0);
 
-        long timeOut = Long.parseLong(delayTextField.getText().toString());
-        timeOut = timeOut * 1000; // Seconds to milliseconds
-        timeOut = timeOut + System.currentTimeMillis(); // Actual time to be triggered
-
-        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        manager.set(AlarmManager.RTC, timeOut, pending);
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(MainActivity.this, Floater.class));
     }
+
 }
 
