@@ -37,6 +37,7 @@ public class TriggerService extends Service {
         } catch (Exception e) {
             System.err.println("Error triggering");
         }
+        stopSelf();
         return super.onStartCommand(intent, flags, startId);
     }
 

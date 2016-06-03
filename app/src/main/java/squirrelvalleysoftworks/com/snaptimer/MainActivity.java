@@ -31,14 +31,13 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 delayTextField = (EditText) findViewById(R.id.delayTextField);
-                long timeout = System.currentTimeMillis();
+                long timeout = 0;
 
                 if(delayTextField.getText().toString().compareTo("") == 0) {
-                    timeout = timeout + 7000; //Default 7 seconds
+                    timeout = 7000; //Default 7 seconds
                 } else {
                     timeout = Long.parseLong(delayTextField.getText().toString());
                     timeout = timeout * 1000; // Seconds to milliseconds
-                    timeout = timeout + System.currentTimeMillis(); // Actual time to be triggered
                 }
 
                 Intent newI = new Intent(MainActivity.this, Floater.class);

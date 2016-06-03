@@ -8,11 +8,14 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+
+import java.util.logging.Logger;
 
 /**
  * Created by smackey2 on 5/31/2016.
@@ -116,11 +119,14 @@ public class Floater extends Service {
 
     private void startButtonHandler() {
         System.out.println("Clicked!");
+        Log.d("Floater", Long.toString(System.currentTimeMillis()));
+        long delay = timeOut + System.currentTimeMillis();
+        Log.d("Floater", Long.toString(timeOut));
         Intent intent = new Intent(this, TriggerService.class);
         PendingIntent pending = PendingIntent.getService(this, 0, intent, 0);
 
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        manager.set(AlarmManager.RTC, timeOut, pending);
+        manager.set(AlarmManager.RTC, delay, pending);
 
     }
 
